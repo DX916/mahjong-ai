@@ -1,0 +1,37 @@
+# 路径: rlcard/agents/mahjong_mcts/reward.yaml
+
+final:
+  win: 7.5        # 锚点：极高正反馈，产生绝对吸引力
+  lose: -1.5      # 基础值
+  draw: -1.45     # 基础值
+  # --- 统计学压制：让流局成为期望洼地 ---
+  extra_punish_not_ting_on_draw: -2.0  # 流局未听总分-8.0，远低于点炮(-5.0)
+  punish_ting_but_not_win: -1.0        # 适度惩罚，保证听牌后的进攻性
+
+intermediate:
+  pong: 0.2        # 提高量纲，使其能抵消 3 步的基础步数罚
+  chow: 0.2
+  gong: 0.35
+  deal_in: -2.5    # 保持严厉，但确保 [Lose + Deal_in] > [Draw + Not_Ting]
+
+special_tingpai:
+  decay: 0.92      # 略微提高，让听牌信号覆盖更长的历史路径
+  phases:
+    - { end: 10, reward: 4.5 }   # 极速听牌：暴奖，诱导模型在前 8 步疯狂组织牌型
+    - { end: 15, reward: 3.0 }  # 快速听牌：高奖
+    - { end: 17, reward: 2.0 }  # 标准听牌：中奖
+    - { end: 20, reward: 1.0 }  # 及格听牌：微奖
+    - { end: 999, reward: 0.2 } # 拖延听牌：象征性
+
+penalty:
+  # 步数惩罚的斜率控制：必须在第 20 步（全场 80 步）形成断崖
+  phases:
+    - { end: 10, val: -0.02 }   # 阶段1: 1-10步，低成本，允许模型换张、做大牌
+    - { end: 16, val: -0.05 }   # 阶段2: 11-16步，成本骤增，催促听牌
+    - { end: 20, val: -0.10 }   # 阶段3: 17-20步，高压区，生存成本极高
+    - { end: 22, val: -0.15 }   # 阶段4: 21-22步，自杀区，每走一步都在剧烈流血
+    - { end: 999, val: -0.25 }  # 阶段5: 23步后，死刑区，强制要求结束战斗
+
+settings:
+  use_tingpai_reward: true
+  use_deal_in_penalty: true

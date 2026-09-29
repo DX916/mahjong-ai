@@ -1,0 +1,19 @@
+# 路径与模型设置
+teacher_model_path: 'models_new/120000/checkpoint_ep120000.pth'
+save_path: 'mahjong_checkpoints/constraint_net.pth'
+seed: 42                # 随机数种子，确保实验可复现
+
+# 训练规模
+num_round: 350          # 总训练轮次
+round_games: 20         # 每轮专家博弈局数
+
+# 经验池设置
+data_pool_capacity: 100000
+
+# 约束网络超参数
+train:
+  learning_rate: 0.00001
+  batch_size: 512
+  train_step: 50
+  device: 'cuda'        # 'cuda' 或 'cpu'
+  res_blocks: 4

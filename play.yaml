@@ -1,0 +1,40 @@
+# 运行环境配置
+seed: 42
+device: 'cuda'
+
+# 4个智能体的独立配置
+players:
+  - id: 0
+    name: "CGI_Agent_0"
+    type: "mcts"
+    cgi_on: false
+    pruning_model: ''    # 填写剪枝网络模型路径, 例如 'mahjong_checkpoints/checkpoint_ep125000.pth'
+    constraint_model: '' # 填写约束网络模型路径, 例如 'mahjong_checkpoints/constraint_net.pth'
+    n_simulations: 0
+
+  - id: 1
+    name: "CGI_Agent_1"
+    type: "mcts"
+    cgi_on: false
+    pruning_model: ''    # 填写剪枝网络模型路径
+    constraint_model: '' # 填写约束网络模型路径
+    n_simulations: 0
+
+  - id: 2
+    name: "CGI_Agent_2"
+    type: "mcts"
+    cgi_on: false
+    pruning_model: ''    # 填写剪枝网络模型路径
+    constraint_model: '' # 填写约束网络模型路径
+    n_simulations: 0
+
+  - id: 3
+    name: "CGI_Agent_3"
+    type: "mcts"
+    cgi_on: false
+    pruning_model: ''    # 填写剪枝网络模型路径
+    constraint_model: '' # 填写约束网络模型路径
+    n_simulations: 0
+
+# 对局保存路径（用于前端渲染读取）
+replay_save_path: 'replays/latest_game.json'

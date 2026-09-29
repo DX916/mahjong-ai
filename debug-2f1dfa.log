@@ -1,0 +1,2 @@
+{"sessionId": "2f1dfa", "runId": "run1", "hypothesisId": "A", "location": "main.py:10", "message": "Checking file object encoding", "data": {"encoding": "cp936"}, "timestamp": 1773568038859}
+{"sessionId": "2f1dfa", "runId": "run1", "hypothesisId": "A", "location": "main.py:15", "message": "Caught error during load", "data": {"error": "'gbk' codec can't decode byte 0xaf in position 4: illegal multibyte sequence"}, "timestamp": 1773568038859}

@@ -1,0 +1,56 @@
+# 路径: rlcard/agents/mahjong_mcts/config.yaml
+env:
+  allow_step_back: true
+  seed: 19
+
+mcts:
+  n_simulations: 100
+  c_puct: 1.5
+
+train:
+  gamma: 0.94
+  use_mcts_in_train: false
+  total_episodes: 140000
+  round_game_num: 50           # 多少局对局为一个 Round，完成后才更新参数
+  learning_rate: 0.000025
+  batch_size: 512
+  buffer_capacity: 75000
+  buffer_path: 'mahjong_checkpoints/replay_buffer.pkl' # 经验池保存路径
+  train_steps_per_episode: 50  # 每次更新模型参数的训练步数
+  epochs: 1
+  model_pool_capacity: 50     # 模型池最大容量
+
+  # 损失函数权重
+  policy_loss_weight: 1.0
+  value_loss_weight: 1.5 #1.5
+  entropy_weight: 0.04
+
+# ==================== RND配置 ====================
+rnd:
+  # 基础开关
+  use_rnd: false                     # 是否启用RND内在激励
+  # 奖励系数
+  intrinsic_reward_coeff: 0.1        # 内在奖励系数（控制探索强度）
+                                      # 建议范围: 0.3-1.0
+                                      # 0.3=保守探索, 0.5=平衡, 0.8=激进探索
+  # 网络配置
+  feature_dim: 128                   # RND网络特征维度 (64/128/256)
+  rnd_learning_rate: 0.0001          # RND预测网络学习率
+                                      # 建议范围: 0.00005-0.0003
+
+  # 归一化配置
+  normalize_intrinsic: true          # 是否归一化内在奖励
+                                      # true=稳定训练, false=原始奖励值
+  intrinsic_reward_scale: 1.0        # 内在奖励缩放因子（备用，通常为1.0）
+
+  # 保存/加载配置
+  save_rnd_with_model: true          # 是否随主模型一起保存RND
+  rnd_checkpoint_dir: 'mahjong_checkpoints/rnd'  # RND checkpoint目录
+  load_rnd_checkpoint: ''              # RND checkpoint加载路径, 例如 'mahjong_checkpoints/rnd/rnd_ep125000.pth'
+                                      # 留空则不加载
+
+device: "cuda"
+save_path: 'mahjong_checkpoints'
+load_path: ''                         # 模型断点续训路径, 例如 'mahjong_checkpoints/checkpoint_ep125000.pth'
+                                      # 留空则从头开始训练
+log_dir: "logs"
